@@ -1,4 +1,5 @@
-# MDB
+
+# react-native-template
 
 [![Build Status](https://travis-ci.com/osamaq/react-native-template.svg?branch=master)](https://travis-ci.com/osamaq/react-native-template)
 [![npm downloads](https://img.shields.io/npm/dt/@osamaq/react-native-template.svg)](https://www.npmjs.com/package/@osamaq/react-native-template)
@@ -19,19 +20,14 @@
 
 <br/>
 
-A minimal template with architecture and boilerplate to let you focus on writing features right away.
-
 Preconfigured with
 
 - TypeScript
-- [SWR](https://swr.now.sh/) for data fetching/caching.
-- [apisauce](https://github.com/infinitered/apisauce) as data fetcher.
-- [Redux Toolkit](https://redux-toolkit.js.org/) for global state.
-- [Redux Observable](https://redux-observable.js.org/) for complex background thread-like work.
+- [axios](https://www.npmjs.com/package/react-native-axios) as data fetcher.
+- [Redux](https://redux.js.org/introduction/getting-started) for global state.
+- [Redux Thunk](https://www.npmjs.com/package/redux-thunk) for complex background thread-like work.
 - [React Navigation](https://reactnavigation.org/) (**v5**) for navigation.
 - [Reactotron in Flipper](https://shift.infinite.red/better-react-native-debugging-with-reactotron-in-flipper-6b823af29220) integration for debugging.
-- [Sentry](https://github.com/getsentry/sentry-react-native) for debugging in production.
-- [react-native-bootsplash](https://github.com/zoontek/react-native-bootsplash) because splash screens are cool.
 - [react-native-svg](https://github.com/react-native-community/react-native-svg) because svg.
 - [react-native-config](https://github.com/luggit/react-native-config) to manage separate environments (dev, staging, production).
 - [Reanimated](https://software-mansion.github.io/react-native-reanimated/) for animations.
@@ -57,43 +53,7 @@ Preconfigured with
 - [Quick Overview](#quick-overview)
 - [File Walkthrough](./docs/file-walkthrough.md)
 
-## Getting Started
 
-Create a new project using the template.
-
-- **Note:** the command will fail if you have the global legacy react-native-cli installed. Make sure you uninstall it first. More info at [react-native-community/cli](https://github.com/react-native-community/cli#about).
-
-### RN 0.63.2
-
-```bash
-$ npx react-native init MyApp --template @osamaq/react-native-template
-```
-
-## Optional Steps
-
-#### Connect To Sentry
-
-This template comes with [Sentry](https://github.com/getsentry/sentry-react-native), but its disabled until you connect your account.
-
-To connect your account:
-
-```bash
-$ cd MyApp/
-
-# For MacOS
-$ npx sentry-wizard -i reactNative -p ios android
-
-# Other Platforms
-$ npx sentry-wizard -i reactNative -p android
-```
-
-Insert your sentry DSN in each [.env](https://github.com/osamaq/react-native-template/blob/ed37c213eacf0681c4f50f959bad170d46be0ed7/template/.env.prod#L5) file (dev, staging and production) and you're all done.
-
-#### Install Reactotron Flipper Plugin
-
-This allows you to use Reactotron within Flipper.
-
-Flipper -> Manage Plugins -> Install Plugins -> flipper-plugin-reactotron
 
 ## Libraries
 
@@ -103,31 +63,30 @@ Let's briefly go over the benefit of each library included in this template.
 
 For type safety ¯\\_(ツ)_/¯
 
-But in all seriousness, if you are considering this template I assume you are a TypeScript fan. If you happen to be a JavaScript user, this template might be overwhelming. If you would like to start learning TypeScript, I suggest bootstrapping with this instead [react-native-community/react-native-template-typescript](https://github.com/react-native-community/react-native-template-typescript) so you can learn at your own pace.
+But in all seriousness, if you are considering this template I assume you are a TypeScript fan. If you happen to be a JavaScript user, this template might be overwhelming. 
 
-### SWR
 
-This library simplifies data fetching and cache management. It allows you to easily show cached data, while the new data is being loaded from the API.
 
-- Caveat: currently it only supports in-memory caching for data.
+### axios
 
-- Alternative: React Query/Apollo.
+-   Make  [XMLHttpRequests](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest)  from the browser
+-   Make  [http](http://nodejs.org/api/http.html)  requests from node.js
+-   Supports the  [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)  API
+-   Intercept request and response
+-   Transform request and response data
+-   Automatic transforms for JSON data
+-   Client side support for protecting against  [XSRF](http://en.wikipedia.org/wiki/Cross-site_request_forgery)
 
-### apisauce
-
-Its a wrapper around axios with extended functionality. I'm happy with its API and I like the problem matcher.
-
-### Redux/Redux Toolkit
+### Redux
 
 I'm happy using Redux Toolkit. It's a lot more concise now and I enjoy the redux ecosystem of plugins.
 
-SWR reduces our dependency on Redux for global state. And sometimes React Navigation can be used to send data to the next screen. I try to leverage these two before reaching out to global state.
+Redux for global state. And sometimes React Navigation can be used to send data to the next screen. I try to leverage these two before reaching out to global state.
 
-If you prefer something else, remove redux and go with that. Do not waste time trying a new state management solution.
+### Redux Thunk
 
-### Redux Observable
+Redux Thunk [middleware](https://github.com/reactjs/redux/blob/master/docs/advanced/Middleware.md) allows you to write action creators that return a function instead of an action. The thunk can be used to delay the dispatch of an action, or to dispatch only if a certain condition is met. The inner function receives the store methods `dispatch` and `getState` as parameters.
 
-This is used alongside Redux for complex background work. Most people will rarely need to use something like this. In fact, if you aren't sure, just remove it (also uninstall its dependency, rxjs).
 
 ### React Navigation
 
@@ -139,21 +98,6 @@ Using this template there will be two main deubgging tools in your toolbelt. Rea
 
 I mainly use Reactotron for reading API calls, asyncstorage operations, redux actions etc. It organizes everything in a neat way. It also has a killer image overlay feature, which allows you to get the UI design pixel prefect.
 
-Flipper could be used for lower level debugging, such as viewing your database or React component tree. There is also a Flipper plugin for using Reactotron within it, so you only need to start one application.
-
-> Flipper -> Manage Plugins -> Install Plugins -> flipper-plugin-reactotron
-
-### Sentry
-
-Benefitial in debugging issues that occur only in release builds. You can view error stack traces for unhandled exceptions. You can also choose to log specific errors in some catch blocks to study how often they occur in production.
-
-In this template, there is a custom Redux [middleware](https://github.com/osamaq/react-native-template/blob/master/template/src/redux/middleware/sentryMiddleware.ts) that adds Redux actions as breadcrumbs to Sentry reports for even easier debugging.
-
-This is similar to [redux-sentry-middleware](https://github.com/vidit-sh/redux-sentry-middleware) but I've yet to test that one.
-
-### react-native-bootsplash
-
-Works great for controlling your splash screen.
 
 ### react-native-svg
 
@@ -163,23 +107,10 @@ Prefer using SVG over images all the time (remember to optimize your SVGs).
 
 If you have different development, staging and production variables, this library is very helpful. It allows you to declare environment variables that can be accessed by all 3 sides (android, ios, JavaScript).
 
-Android: by default, running `react-native run-android` will use the development .env file. To load .env.staging we must use:
-
-`ENVFILE=.env.staging react-native run-android`
-
-> Note: the above works on MacOS. For windows its a bit different. See [Different Environments](https://github.com/luggit/react-native-config#different-environments).
-
-iOS: two additional schemes are created in the Xcode project for staging and production. The corresponding .env file is set via the scheme's pre-action:
-
-<div align="center">
-    <img src="docs/assets/scheme.png" alt="Scheme's pre-action setting the .env file" width="100%">
-</div>
-
-NPM scripts for running the app with the desired configuration are [included](https://github.com/osamaq/react-native-template/blob/acc4f4ab117bee099a531ad44be1130f9d24df69/template/package.json#L11) for convenience.
 
 ### Reanimated/Redash
 
-Necessary when creating complex gesture based animations that are highly performant. Redash contains boilerplate helpers for Reanimated.
+Necessary when creating complex gesture based animations that are highly performant.
 
 ### AsyncStorage
 
@@ -287,4 +218,4 @@ If you would like to learn more without going through the codebase, read the [fi
 
 ## Credits
 
-This template is modified from [react-native-typescript-template](https://github.com/react-native-community/react-native-template-typescript). Thank you ❤️
+*Phantom Design studio*
